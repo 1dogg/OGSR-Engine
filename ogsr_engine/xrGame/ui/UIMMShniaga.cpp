@@ -146,7 +146,8 @@ void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCST
 //				continue;
 //		}
 		st = xr_new<CUIStatic>();
-		st->Init(0,0,m_view->GetDesiredChildWidth(), height);
+
+		st->Init(0, 0, !std::string(xml_doc.ReadAttrib("btn", i, "name")).find("btn_empty") ? 0 : m_view->GetDesiredChildWidth(), height);
 		st->SetTextComplexMode		(false);
 		st->SetTextST(xml_doc.ReadAttrib	("btn", i, "caption"));
 		if (pF)

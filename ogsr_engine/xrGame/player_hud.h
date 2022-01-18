@@ -194,6 +194,7 @@ public:
 	attachable_hud_item* create_hud_item(const shared_str& sect);
 
 	void attach_item(CHudItem* item);
+	void set_part_cycle_time(u8 part, float time);
 	bool allow_activation(CHudItem* item);
 	attachable_hud_item* attached_item(u16 item_idx) { return m_attached_items[item_idx]; };
 	void detach_item_idx(u16 idx);

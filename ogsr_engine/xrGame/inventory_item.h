@@ -256,7 +256,7 @@ public:
 	virtual CMissile			*cast_missile				()	{return 0;}
 	virtual CHudItem			*cast_hud_item				()	{return 0;}
 	virtual CWeaponAmmo			*cast_weapon_ammo			()	{return 0;}
-	virtual CGameObject			*cast_game_object			()  {return 0;};
+	virtual CGameObject			*cast_game_object			()	{return 0;};
 
  private:
         u8   loaded_belt_index;

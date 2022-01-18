@@ -29,6 +29,7 @@
 #include "WeaponMagazined.h"
 #include "../xr_3da/xr_input.h"
 #include "CustomDetector.h"
+#include "Flashlight.h"
 
 bool g_bAutoClearCrouch = true;
 extern int g_bHudAdjustMode;
@@ -119,6 +120,9 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			}
 		} break;
 	case kTORCH: { 
+		if (auto flashlight = smart_cast<CFlashlight*>(inventory().ItemFromSlot(DETECTOR_SLOT))) {
+			break;
+		}
 			CTorch* pTorch = smart_cast<CTorch*>(inventory().ItemFromSlot(TORCH_SLOT));
 			if (pTorch) {
 				pTorch->Switch();
@@ -128,6 +132,14 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	{
 		if (auto det = smart_cast<CCustomDetector*>(inventory().ItemFromSlot(DETECTOR_SLOT)))
 			det->ToggleDetector(g_player_hud->attached_item(0) != nullptr);
+		if (auto flash = smart_cast<CFlashlight*>(inventory().ItemFromSlot(DETECTOR_SLOT))) {
+			flash->ToggleDevice(g_player_hud->attached_item(0) != nullptr);
+			CTorch* pTorch = smart_cast<CTorch*>(inventory().ItemFromSlot(TORCH_SLOT));
+			if (pTorch) {
+				pTorch->Switch(!flash->torch_active());
+			}
+		}
+
 	}
 	break;
 	case kWPN_1:

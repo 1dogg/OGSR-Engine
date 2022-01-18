@@ -160,6 +160,9 @@ constexpr auto CLSID_DETECTOR_ADVANCED        = MK_CLSID('D','E','T','_','A','D'
 constexpr auto CLSID_DETECTOR_ELITE           = MK_CLSID('D','E','T','_','E','L','I','T');
 constexpr auto CLSID_DETECTOR_SCIENTIFIC      = MK_CLSID('D','E','T','_','S','C','I','E');
 
+// Flashlight
+constexpr auto CLSID_FLASHLIGHT = MK_CLSID('D', '_', 'F', 'L', 'A', 'L', 'I', 'T');
+
 // PDA
 constexpr auto CLSID_DEVICE_PDA               = MK_CLSID('D','_','P','D','A',' ',' ',' ');
 

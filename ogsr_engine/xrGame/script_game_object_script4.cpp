@@ -100,7 +100,6 @@ CSE_ALifeDynamicObject* CScriptGameObject::alife_object() const
 	return object().alife_object();
 }
 
-
 u32 get_level_id(u32 gvid)
 {
 	CGameGraph &gg = ai().game_graph(); 

@@ -65,6 +65,7 @@
 #include "location_manager.h"
 #include "PHCapture.h"
 #include "CustomDetector.h"
+#include "Flashlight.h"
 
 // Tip for action for object we're looking at
 constexpr const char* m_sCarCharacterUseAction        = "car_character_use";
@@ -1203,6 +1204,10 @@ void CActor::shedule_Update	(u32 DT)
 void CActor::renderable_Render	()
 {
 	inherited::renderable_Render			();
+
+	CFlashlight* flashlight = smart_cast<CFlashlight*>(inventory().ItemFromSlot(DETECTOR_SLOT));
+	if (flashlight && flashlight->torch_active())
+		return;
 
 	if ((cam_active==eacFirstEye &&									// first eye cam
 		::Render->get_generation() == ::Render->GENERATION_R2 &&	// R2

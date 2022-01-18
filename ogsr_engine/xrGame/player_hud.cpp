@@ -1001,6 +1001,19 @@ void player_hud::attach_item(CHudItem* item)
 	pi->m_parent_hud_item = item;
 }
 
+void player_hud::set_part_cycle_time(u8 part, float time)
+{
+	u32 bc = m_model->LL_PartBlendsCount(part);
+	for (u32 bidx = 0; bidx < bc; ++bidx)
+	{
+		CBlend* BR = m_model->LL_PartBlend(part, bidx);
+		if (!BR)
+			continue;
+
+		BR->timeCurrent = BR->timeTotal * time;
+	}
+}
+
 void player_hud::detach_item_idx(u16 idx)
 {
 	if (nullptr == attached_item(idx))
