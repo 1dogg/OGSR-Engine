@@ -186,7 +186,26 @@ public:
 	// Set file pointer to start of chunk data (0 for root chunk)
 	IC	void		rewind		()			{	impl().seek(0); }
 
-	IC	u32 		find_chunk	(u32 ID, BOOL* bCompressed = 0)	
+	IC	u32 find_chunk(const u32 ID, BOOL* bCompressed = nullptr)
+	{
+		u32	dwSize, dwType;
+
+		rewind();
+		while (!eof()) {
+			dwType = r_u32();
+			dwSize = r_u32();
+			if ((dwType & (~CFS_CompressMark)) == ID) {
+
+				VERIFY((u32)impl().tell() + dwSize <= (u32)impl().length());
+				if (bCompressed) *bCompressed = dwType & CFS_CompressMark;
+				return dwSize;
+			}
+			else	impl().advance(dwSize);
+		}
+		return 0;
+	}
+
+	u32 find_chunk_thm(const u32 ID, const char* dbg_name)
 	{
 		u32 dwSize{}, dwType{};
 		bool success{};
@@ -239,7 +258,7 @@ public:
 									if (pos + length <= size - 8 && (r_u32() & 0x7ffffff0) == 0x810) break; // found start of next section
 									length++;
 								}
-								Msg("~~THM chunk [%d] fixed, wrong size = [%d], correct size = [%d]", ID, dwSize, length);
+								Msg("!![%s] THM [%s] chunk [%u] fixed, wrong size = [%u], correct size = [%u]", __FUNCTION__, dbg_name, ID, dwSize, length);
 							}
 						}
 
@@ -256,7 +275,6 @@ public:
 			}
 		}
 		VERIFY((u32)impl().tell() + dwSize <= (u32)impl().length());
-		if (bCompressed) *bCompressed = dwType & CFS_CompressMark;
 
 		const u32 dwPos = (u32)impl().tell();
 		if (dwPos + dwSize < (u32)impl().length())

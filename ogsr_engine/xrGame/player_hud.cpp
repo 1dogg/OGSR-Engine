@@ -115,7 +115,16 @@ void player_hud_motion_container::load(attachable_hud_item* parent, IKinematicsA
 				}
 			}
 
-			ASSERT_FMT(pm.m_animations.size(), "[%s] motion [%s](%s) not found in section [%s]", __FUNCTION__, pm.m_base_name.c_str(), name.c_str(), sect.c_str());
+			if (pm.m_animations.empty())
+			{
+				if (parent->m_has_separated_hands) {
+					FATAL("[%s] motion [%s](%s) not found in section [%s]", __FUNCTION__, pm.m_base_name.c_str(), name.c_str(), sect.c_str());
+				}
+				else {
+					Msg("! [%s] motion [%s](%s) not found in section [%s]", __FUNCTION__, pm.m_base_name.c_str(), name.c_str(), sect.c_str());
+					continue;
+				}
+			}
 
 			m_anims.emplace(std::move(name), std::move(pm));
 		}
@@ -321,6 +330,7 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 		{
 			bone_name = pSettings->r_string(sect_name, "fire_bone");
 			m_fire_bone = K->LL_BoneID(bone_name);
+			ASSERT_FMT(m_fire_bone != BI_NONE, "!![%s] bone [%s] not found in weapon [%s]", __FUNCTION__, bone_name.c_str(), sect_name.c_str());
 			m_fire_point_offset = pSettings->r_fvector3(sect_name, "fire_point");
 		}
 		else
@@ -331,6 +341,7 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 		{
 			bone_name = pSettings->r_string(sect_name, "fire_bone");
 			m_fire_bone2 = K->LL_BoneID(bone_name);
+			ASSERT_FMT(m_fire_bone2 != BI_NONE, "!![%s] bone [%s] not found in weapon [%s]", __FUNCTION__, bone_name.c_str(), sect_name.c_str());
 			m_fire_point2_offset = pSettings->r_fvector3(sect_name, "fire_point2");
 		}
 		else if (m_prop_flags.test(e_fire_point))
@@ -338,6 +349,7 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 			m_prop_flags.set(e_fire_point2, true);
 			bone_name = pSettings->r_string(sect_name, "fire_bone");
 			m_fire_bone2 = K->LL_BoneID(bone_name);
+			ASSERT_FMT(m_fire_bone2 != BI_NONE, "!![%s] bone [%s] not found in weapon [%s]", __FUNCTION__, bone_name.c_str(), sect_name.c_str());
 			m_fire_point2_offset.set(m_fire_point_offset);
 		}
 		else
@@ -348,6 +360,7 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 		{
 			bone_name = pSettings->r_string(sect_name, "fire_bone");
 			m_shell_bone = K->LL_BoneID(bone_name);
+			ASSERT_FMT(m_shell_bone != BI_NONE, "!![%s] bone [%s] not found in weapon [%s]", __FUNCTION__, bone_name.c_str(), sect_name.c_str());
 			m_shell_point_offset = pSettings->r_fvector3(sect_name, "shell_point");
 		}
 		else
@@ -360,6 +373,7 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 		{
 			bone_name = pSettings->r_string(sect_name, "fire_bone");
 			m_fire_bone = K->LL_BoneID(bone_name);
+			ASSERT_FMT(m_fire_bone != BI_NONE, "!![%s] bone [%s] not found in weapon [%s]", __FUNCTION__, bone_name.c_str(), sect_name.c_str());
 			m_fire_point_offset = pSettings->r_fvector3(sect_name, "fire_point");
 			m_shoot_point_offset = READ_IF_EXISTS(pSettings, r_fvector3, sect_name, "shoot_point", (Fvector{ m_fire_point_offset.x, m_fire_point_offset.y, -0.5f }));
 		}
@@ -371,6 +385,7 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 		{
 			bone_name = pSettings->r_string(sect_name, "fire_bone2");
 			m_fire_bone2 = K->LL_BoneID(bone_name);
+			ASSERT_FMT(m_fire_bone2 != BI_NONE, "!![%s] bone [%s] not found in weapon [%s]", __FUNCTION__, bone_name.c_str(), sect_name.c_str());
 			m_fire_point2_offset = pSettings->r_fvector3(sect_name, "fire_point2");
 		}
 		else
@@ -381,6 +396,7 @@ void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 		{
 			bone_name = pSettings->r_string(sect_name, "shell_bone");
 			m_shell_bone = K->LL_BoneID(bone_name);
+			ASSERT_FMT(m_shell_bone != BI_NONE, "!![%s] bone [%s] not found in weapon [%s]", __FUNCTION__, bone_name.c_str(), sect_name.c_str());
 			m_shell_point_offset = pSettings->r_fvector3(sect_name, "shell_point");
 		}
 		else
