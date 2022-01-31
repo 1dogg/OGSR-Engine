@@ -65,7 +65,7 @@ bool CFlashlight::CheckCompatibilityInt(CHudItem* itm, u16* slot_to_activate)
 	u32 slot = iitm.BaseSlot();
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	auto& Inv = pActor->inventory();
-	bool bres = (slot == SECOND_WEAPON_SLOT || slot == KNIFE_SLOT || slot == BOLT_SLOT); // || iitm.AllowDevice();
+	bool bres = (slot == FIRST_WEAPON_SLOT || slot == KNIFE_SLOT || slot == BOLT_SLOT);
 	if (!bres && slot_to_activate)
 	{
 		*slot_to_activate = NO_ACTIVE_SLOT;
@@ -75,15 +75,16 @@ bool CFlashlight::CheckCompatibilityInt(CHudItem* itm, u16* slot_to_activate)
 		if (Inv.ItemFromSlot(KNIFE_SLOT))
 			*slot_to_activate = KNIFE_SLOT;
 
-		if (Inv.ItemFromSlot(GRENADE_SLOT) && Inv.ItemFromSlot(GRENADE_SLOT)->BaseSlot() != GRENADE_SLOT)
-			*slot_to_activate = GRENADE_SLOT;
-
-		if (Inv.ItemFromSlot(SECOND_WEAPON_SLOT) && Inv.ItemFromSlot(SECOND_WEAPON_SLOT)->BaseSlot() != GRENADE_SLOT)
+		if (Inv.ItemFromSlot(SECOND_WEAPON_SLOT) && Inv.ItemFromSlot(SECOND_WEAPON_SLOT)->BaseSlot() != SECOND_WEAPON_SLOT)
 			*slot_to_activate = SECOND_WEAPON_SLOT;
+
+		if (Inv.ItemFromSlot(FIRST_WEAPON_SLOT) && Inv.ItemFromSlot(FIRST_WEAPON_SLOT)->BaseSlot() != SECOND_WEAPON_SLOT)
+			*slot_to_activate = FIRST_WEAPON_SLOT;
 
 		if (*slot_to_activate != NO_ACTIVE_SLOT)
 			bres = true;
 	}
+
 
 	if (itm->GetState() != CHUDState::eShowing)
 		bres = bres && !itm->IsPending();

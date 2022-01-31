@@ -121,7 +121,9 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		} break;
 	case kTORCH: { 
 		if (auto flashlight = smart_cast<CFlashlight*>(inventory().ItemFromSlot(DETECTOR_SLOT))) {
-			break;
+			if (flashlight && flashlight->IsWorking()) {
+				break;
+			}
 		}
 			CTorch* pTorch = smart_cast<CTorch*>(inventory().ItemFromSlot(TORCH_SLOT));
 			if (pTorch) {
@@ -136,7 +138,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			flash->ToggleDevice(g_player_hud->attached_item(0) != nullptr);
 			CTorch* pTorch = smart_cast<CTorch*>(inventory().ItemFromSlot(TORCH_SLOT));
 			if (pTorch) {
-				pTorch->Switch(!flash->torch_active());
+				pTorch->Switch(!pTorch->torch_active());
 			}
 		}
 
