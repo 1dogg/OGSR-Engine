@@ -149,6 +149,9 @@ void CUIMainIngameWnd::Init()
 	AttachChild					(&UIWeaponBack);
 	xml_init.InitStatic			(uiXml, "static_weapon", 0, &UIWeaponBack);
 
+	UIWeaponBack.AttachChild(&UIWeaponName);
+	xml_init.InitStatic(uiXml, "static_weapon_name", 0, &UIWeaponName);
+
 	UIWeaponBack.AttachChild	(&UIWeaponSignAmmo);
 	xml_init.InitStatic			(uiXml, "static_ammo", 0, &UIWeaponSignAmmo);
 	UIWeaponSignAmmo.SetElipsis	(CUIStatic::eepEnd, 2);
@@ -184,12 +187,12 @@ void CUIMainIngameWnd::Init()
 	//Полоса прогресса здоровья
 	UIStaticHealth.AttachChild	(&UIHealthBar);
 //.	xml_init.InitAutoStaticGroup(uiXml,"static_health", &UIStaticHealth);
-	xml_init.InitProgressBar	(uiXml, "progress_bar_health", 0, &UIHealthBar);
+	xml_init.InitStatic	(uiXml, "progress_bar_health", 0, &UIHealthBar);
 
 	//Полоса прогресса армора
 	UIStaticArmor.AttachChild	(&UIArmorBar);
 //.	xml_init.InitAutoStaticGroup(uiXml,"static_armor", &UIStaticArmor);
-	xml_init.InitProgressBar	(uiXml, "progress_bar_armor", 0, &UIArmorBar);
+	xml_init.InitStatic	(uiXml, "progress_bar_armor", 0, &UIArmorBar);
 
 	
 
@@ -391,7 +394,7 @@ void CUIMainIngameWnd::Update()
 		{
 			UIArmorBar.Show					(true);
 			UIStaticArmor.Show				(true);
-			UIArmorBar.SetProgressPos		(pItem->GetCondition()*100);
+			UIArmorBar.SetText((std::to_string((int)std::round(pItem->GetCondition() * 100))).c_str());
 		}
 		else
 		{
@@ -462,7 +465,7 @@ void CUIMainIngameWnd::Update()
 	}
 
 	// health&armor
-	UIHealthBar.SetProgressPos		(m_pActor->GetfHealth()*100.0f);
+	UIHealthBar.SetText				((std::to_string((int)std::round(m_pActor->GetfHealth()*100.0f))).c_str());
 	UIMotionIcon.SetPower			(m_pActor->conditions().GetPower()*100.0f);
 
 	UIZoneMap->UpdateRadar			(Device.vCameraPosition);
@@ -846,7 +849,7 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 void CUIMainIngameWnd::UpdateActiveItemInfo()
 {
 	PIItem item		=  m_pActor->inventory().ActiveItem();
-	if ( item && item->NeedBriefInfo() )
+	if ( item )
 	{
 		xr_string					str_name;
 		xr_string					icon_sect_name;
@@ -854,7 +857,8 @@ void CUIMainIngameWnd::UpdateActiveItemInfo()
 		item->GetBriefInfo			(str_name, icon_sect_name, str_count);
 
 		UIWeaponSignAmmo.Show		(true						);
-		UIWeaponBack.SetText		(str_name.c_str			()	);
+		UIWeaponName.Show			(true						);
+		UIWeaponName.SetText		(item->NameShort		()	);
 		UIWeaponSignAmmo.SetText	(str_count.c_str		()	);
 		SetAmmoIcon					(icon_sect_name.c_str	()	);
 
@@ -863,6 +867,7 @@ void CUIMainIngameWnd::UpdateActiveItemInfo()
 	}else
 	{
 		UIWeaponIcon.Show			(false);
+		UIWeaponName.Show			(false);
 		UIWeaponSignAmmo.Show		(false);
 		UIWeaponBack.SetText		("");
 		m_pWeapon = item ? smart_cast<CWeapon*>( item ) : nullptr;
