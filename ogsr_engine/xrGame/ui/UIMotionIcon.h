@@ -16,9 +16,9 @@ public:
 private:
 							EState				m_curren_state;
 							CUIStatic			m_states[stLast];
-							CUIProgressBar		m_power_progress;
-							CUIProgressBar		m_luminosity_progress;
-							CUIProgressBar		m_noise_progress;
+							CUIStatic			m_power_progress;
+							CUIStatic			m_luminosity_progress;
+							CUIStatic			m_noise_progress;
 
 		struct _npc_visibility{
 			u16				id;

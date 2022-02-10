@@ -138,7 +138,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			flash->ToggleDevice(g_player_hud->attached_item(0) != nullptr);
 			CTorch* pTorch = smart_cast<CTorch*>(inventory().ItemFromSlot(TORCH_SLOT));
 			if (pTorch) {
-				pTorch->Switch(!pTorch->torch_active());
+				pTorch->Switch(false);
 			}
 		}
 

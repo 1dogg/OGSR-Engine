@@ -44,8 +44,8 @@ protected:
 	CUIStatic			UIStaticHealth;
 	CUIStatic			UIStaticArmor;
 	CUIStatic			UIStaticQuickHelp;
-	CUIProgressBar		UIHealthBar;
-	CUIProgressBar		UIArmorBar;
+	CUIStatic			UIHealthBar;
+	CUIStatic			UIArmorBar;
 	CUICarPanel			UICarPanel;
 	CUIMotionIcon		UIMotionIcon;	
 	CUIZoneMap*			UIZoneMap;
@@ -56,6 +56,7 @@ protected:
 	//изображение оружия
 	CUIStatic			UIWeaponBack;
 	CUIStatic			UIWeaponSignAmmo;
+	CUIStatic			UIWeaponName;
 	CUIStatic			UIWeaponIcon;
 	Frect				UIWeaponIcon_rect;
 public:

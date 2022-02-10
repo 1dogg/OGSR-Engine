@@ -33,13 +33,13 @@ void CUIMotionIcon::Init()
 	xml_init.InitStatic			(uiXml, "background", 0, this);	
 
 	AttachChild					(&m_power_progress);
-	xml_init.InitProgressBar	(uiXml, "power_progress", 0, &m_power_progress);	
+	xml_init.InitStatic			(uiXml, "power_progress", 0, &m_power_progress);
 
 	AttachChild					(&m_luminosity_progress);
-	xml_init.InitProgressBar	(uiXml, "luminosity_progress", 0, &m_luminosity_progress);	
+	xml_init.InitStatic			(uiXml, "luminosity_progress", 0, &m_luminosity_progress);
 
 	AttachChild					(&m_noise_progress);
-	xml_init.InitProgressBar	(uiXml, "noise_progress", 0, &m_noise_progress);	
+	xml_init.InitStatic			(uiXml, "noise_progress", 0, &m_noise_progress);
 	
 	AttachChild					(&m_states[stNormal]);
 	xml_init.InitStatic			(uiXml, "state_normal", 0, &m_states[stNormal]);
@@ -85,18 +85,16 @@ void CUIMotionIcon::ShowState(EState state)
 
 void CUIMotionIcon::SetPower(float Pos)
 {
-	m_power_progress.SetProgressPos(Pos);
+	m_power_progress.SetText(std::to_string((int)std::round(Pos)).c_str());
 }
 
 void CUIMotionIcon::SetNoise(float Pos)
 {
-	Pos	= clampr(Pos, m_noise_progress.GetRange_min(), m_noise_progress.GetRange_max());
-	m_noise_progress.SetProgressPos(Pos);
+	m_noise_progress.SetText(std::to_string((int)std::round(Pos)).c_str());
 }
 
 void CUIMotionIcon::SetLuminosity(float Pos)
 {
-	Pos						= clampr(Pos, m_luminosity_progress.GetRange_min(), m_luminosity_progress.GetRange_max());
 	m_luminosity			= Pos;
 }
 
@@ -109,14 +107,14 @@ void CUIMotionIcon::Update()
 			std::sort					(m_npc_visibility.begin(), m_npc_visibility.end());
 			SetLuminosity				(m_npc_visibility.back().value);
 		}else
-			SetLuminosity				(m_luminosity_progress.GetRange_min() );
+			SetLuminosity				(0);
 	}
 	inherited::Update();
 	
 	//m_luminosity_progress 
 	{
-		float len					= m_noise_progress.GetRange_max()-m_noise_progress.GetRange_min();
-		float cur_pos				= m_luminosity_progress.GetProgressPos();
+		float len					= 100;
+		float cur_pos				= atof(m_luminosity_progress.GetText());
 		if(cur_pos!=m_luminosity){
 			float _diff = _abs(m_luminosity-cur_pos);
 			if(m_luminosity>cur_pos){
@@ -124,17 +122,15 @@ void CUIMotionIcon::Update()
 			}else{
 				cur_pos				-= _min(len*Device.fTimeDelta, _diff);
 			}
-			clamp(cur_pos, m_noise_progress.GetRange_min(), m_noise_progress.GetRange_max());
-			m_luminosity_progress.SetProgressPos(cur_pos);
+			m_luminosity_progress.SetText(std::to_string((int)std::round(cur_pos)).c_str());
 		}
 	}
 }
 
 void CUIMotionIcon::SetActorVisibility		(u16 who_id, float value)
 {
-	float v		= float(m_luminosity_progress.GetRange_max() - m_luminosity_progress.GetRange_min());
+	float v		= 100;
 	value		*= v;
-	value		+= m_luminosity_progress.GetRange_min();
 
 	xr_vector<_npc_visibility>::iterator it = std::find(m_npc_visibility.begin(), 
 														m_npc_visibility.end(),
