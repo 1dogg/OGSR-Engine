@@ -326,43 +326,43 @@ void CHudItem::PlayAnimIdle()
 
 bool CHudItem::TryPlayAnimIdle()
 {
-	if (!IsZoomed())
-	{
-		if (auto pActor = smart_cast<CActor*>(object().H_Parent()))
-		{
-			const u32 State = pActor->get_state();
-			if (State & mcSprint)
-			{
-				PlayAnimIdleSprint();
-				return true;
-			}
-			else if (!HudBobbingAllowed())
-			{
-				if (State & mcAnyMove)
-				{
-					if (!(State & mcCrouch))
-					{
-						if (State & mcAccel) //Ходьба медленная (SHIFT)
-							PlayAnimIdleMovingSlow();
-						else
-							PlayAnimIdleMoving();
-						return true;
-					}
-					else if(State & mcAccel) //Ходьба в присяде (CTRL+SHIFT)
-					{
-						PlayAnimIdleMovingCrouchSlow();
-						return true;
-					}
-					else
-					{
-						PlayAnimIdleMovingCrouch();
-						return true;
-					}
-				}
-			}
-		}
-	}
-	return false;
+    if (!IsZoomed())
+    {
+        if (auto pActor = smart_cast<CActor*>(object().H_Parent()))
+        {
+            const u32 State = pActor->get_state();
+            if (State & mcSprint)
+            {
+                PlayAnimIdleSprint();
+                return true;
+            }
+            else if (!HudBobbingAllowed())
+            {
+                if (State & mcAnyMove)
+                {
+                    if (!(State & mcCrouch))
+                    {
+                        if (State & mcAccel) //Ходьба медленная (SHIFT)
+                            PlayAnimIdleMovingSlow();
+                        else
+                            PlayAnimIdleMoving();
+                        return true;
+                    }
+                    else if(State & mcAccel) //Ходьба в присяде (CTRL+SHIFT)
+                    {
+                        PlayAnimIdleMovingCrouchSlow();
+                        return true;
+                    }
+                    else
+                    {
+                        PlayAnimIdleMovingCrouch();
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 /*void CHudItem::PlayAnimBore()

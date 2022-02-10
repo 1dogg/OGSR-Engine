@@ -100,6 +100,11 @@ std::vector<_action> actions = {
 	DEF_ACTION("quick_load",			kQUICK_LOAD)
 
 	DEF_ACTION("artefact",			kARTEFACT)
+
+	DEF_ACTION("quick_use_1",			kQUICK_USE_1)
+	DEF_ACTION("quick_use_2",			kQUICK_USE_2)
+	DEF_ACTION("quick_use_3",			kQUICK_USE_3)
+	DEF_ACTION("quick_use_4",			kQUICK_USE_4)
 };
 
 std::vector<_binding> g_key_bindings;

@@ -50,7 +50,6 @@ private:
 		flHighlightAllCells	= (1 << 8),
 	};
 	Flags16					m_flags;
-	CUICellItem*			m_selected_item;
 	Ivector2				m_orig_cell_capacity;
 	Ivector2				m_virtual_cells_alignment;
 	bool					m_bConditionProgBarVisible;
@@ -59,7 +58,7 @@ public:
 	CUICellContainer*		m_container;
 protected:
 	CUIScrollBar*			m_vScrollBar;
-
+	CUICellItem*			m_selected_item;
 	void OnScrollV				(CUIWindow* w, void* pData);
 	void OnItemStartDragging	(CUIWindow* w, void* pData);
 	void OnItemDrop				(CUIWindow* w, void* pData);
@@ -154,6 +153,7 @@ public:
 class CUICellContainer :public CUIWindow
 {
 	friend class CUIDragDropListEx;
+	friend class CUIDragDropReferenceList;
 
 private:
 	typedef CUIWindow inherited;

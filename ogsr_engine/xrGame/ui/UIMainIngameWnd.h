@@ -44,8 +44,8 @@ protected:
 	CUIStatic			UIStaticHealth;
 	CUIStatic			UIStaticArmor;
 	CUIStatic			UIStaticQuickHelp;
-	CUIProgressBar		UIHealthBar;
-	CUIProgressBar		UIArmorBar;
+	CUIStatic			UIHealthBar;
+	CUIStatic			UIArmorBar;
 	CUICarPanel			UICarPanel;
 	CUIMotionIcon		UIMotionIcon;	
 	CUIZoneMap*			UIZoneMap;
@@ -56,11 +56,17 @@ protected:
 	//изображение оружия
 	CUIStatic			UIWeaponBack;
 	CUIStatic			UIWeaponSignAmmo;
+	CUIStatic			UIWeaponName;
 	CUIStatic			UIWeaponIcon;
 	Frect				UIWeaponIcon_rect;
 public:
 	CUIStatic*			GetPDAOnline					() { return &UIPdaOnline; };
 	CUIZoneMap*			GetUIZoneMap					() { return UIZoneMap; }
+	xr_vector<CUIStatic*> m_quick_slots_icons;
+	CUIStatic* m_QuickSlotText1;
+	CUIStatic* m_QuickSlotText2;
+	CUIStatic* m_QuickSlotText3;
+	CUIStatic* m_QuickSlotText4;
 protected:
 
 
@@ -161,6 +167,7 @@ protected:
 	float				m_iPickUpItemIconHeight{};
 
 	void				UpdatePickUpItem();
+	void				UpdateQuickSlots();
 public:
 	void				SetPickUpItem	(CInventoryItem* PickUpItem);
 

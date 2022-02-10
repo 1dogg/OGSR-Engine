@@ -182,7 +182,30 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		if (auto wpn = smart_cast<CWeapon*>(inventory().ActiveItem()))
 			wpn->SwitchFlashlight(!wpn->IsFlashlightOn());
 	}break;
+	case kQUICK_USE_1:
+	case kQUICK_USE_2:
+	case kQUICK_USE_3:
+	case kQUICK_USE_4:
+	{
+		const shared_str& item_name = g_quick_use_slots[cmd - kQUICK_USE_1];
+		if (item_name.size())
+		{
+			PIItem itm = inventory().GetAny(item_name.c_str());
 
+            if(!(GetTrade()->IsInTradeState()))
+            {
+                if(itm)
+                {
+                    inventory().Eat				(itm);
+                    SDrawStaticStruct* _s		= HUD().GetUI()->UIGame()->AddCustomStatic("item_used", true);
+                    _s->m_endTime				= Device.fTimeGlobal+3.0f;// 3sec
+                    string1024					str;
+                    strconcat					(sizeof(str),str,*CStringTable().translate("st_item_used"),": ", itm->Name());
+                    _s->wnd()->SetText			(str);
+                }
+            }
+		}
+	}break;
 	}
 }
 void CActor::IR_OnMouseWheel(int direction)

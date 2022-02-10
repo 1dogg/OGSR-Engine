@@ -18,6 +18,7 @@
 #include "../CustomOutfit.h"
 #include "../string_table.h"
 #include <regex>
+#include "UIDragDropReferenceList.h"
 
 void CUIInventoryWnd::EatItem(PIItem itm)
 {
@@ -311,6 +312,27 @@ bool CUIInventoryWnd::TryUseItem(PIItem itm)
 		return true;
 	}
 	return false;
+}
+
+#include "UICursor.h"
+#include "UICellItemFactory.h"
+bool CUIInventoryWnd::ToQuickSlot(CUICellItem* itm)
+{
+	PIItem iitem = (PIItem)itm->m_pData;
+	CEatableItemObject* eat_item = smart_cast<CEatableItemObject*>(iitem);
+	if (!eat_item)
+		return false;
+
+	u8 slot_idx = iitem->GetSlot();
+	if (slot_idx == 255)
+		return false;
+
+	if (!m_pQuickSlot->CanSetItem(itm))
+		return false;
+
+	m_pQuickSlot->SetItem(create_cell_item(iitem), GetUICursor()->GetCursorPosition());
+	xr_strcpy(ACTOR_DEFS::g_quick_use_slots[slot_idx], iitem->m_section_id.c_str());
+	return true;
 }
 
 bool CUIInventoryWnd::DropItem(PIItem itm, CUIDragDropListEx* lst)

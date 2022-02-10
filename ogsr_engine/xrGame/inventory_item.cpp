@@ -91,6 +91,7 @@ void CInventoryItem::Load(LPCSTR section)
 
 	m_name				= CStringTable().translate( pSettings->r_string(section, "inv_name") );
 	m_nameShort			= CStringTable().translate( pSettings->r_string(section, "inv_name_short"));
+	m_section_id._set(section);
 
 //.	NameComplex			();
 	m_weight			= pSettings->r_float(section, "inv_weight");

@@ -95,7 +95,12 @@ enum	EGameActions
 
 	kLASTACTION = u32(-3),
 	kNOTBINDED = u32(-2),
-	kFORCEDWORD	= u32(-1)
+	kFORCEDWORD	= u32(-1),
+
+	kQUICK_USE_1,
+	kQUICK_USE_2,
+	kQUICK_USE_3,
+	kQUICK_USE_4,
 };
 
 struct _keyboard		

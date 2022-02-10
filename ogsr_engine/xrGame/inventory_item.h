@@ -137,6 +137,7 @@ public:
 	shared_str					m_Description;
 	CUIInventoryCellItem*		m_cell_item;
 
+	shared_str					m_section_id;
 	shared_str					m_name;
 	shared_str					m_nameShort;
 	shared_str					m_nameComplex;
