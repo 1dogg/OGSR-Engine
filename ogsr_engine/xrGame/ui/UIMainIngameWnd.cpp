@@ -310,7 +310,7 @@ void CUIMainIngameWnd::Draw()
 
 	if(!m_pActor) return;
 
-	UIMotionIcon.SetNoise		((s16)(0xffff&iFloor(m_pActor->m_snd_noise*100.0f)));
+	UIMotionIcon.SetNoise		(m_pActor->m_snd_noise * 100.0f);
 	CUIWindow::Draw				();
 	UIZoneMap->Render			();			
 
