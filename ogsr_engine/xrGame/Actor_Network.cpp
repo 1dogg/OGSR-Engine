@@ -429,6 +429,11 @@ void CActor::save(NET_Packet &output_packet)
 	CInventoryOwner::save(output_packet);
 	output_packet.w_u8(u8(m_bOutBorder));
 	output_packet.w_u8( u8( character_physics_support()->movement()->BoxID() ) );
+
+	output_packet.w_stringZ(g_quick_use_slots[0]);
+	output_packet.w_stringZ(g_quick_use_slots[1]);
+	output_packet.w_stringZ(g_quick_use_slots[2]);
+	output_packet.w_stringZ(g_quick_use_slots[3]);
 }
 
 void CActor::load(IReader &input_packet)
@@ -438,6 +443,11 @@ void CActor::load(IReader &input_packet)
 	m_bOutBorder=!!(input_packet.r_u8());
 	if ( ai().get_alife()->header().version() > 5 )
 	  m_loaded_ph_box_id = input_packet.r_u8();
+
+	input_packet.r_stringZ(g_quick_use_slots[0], sizeof(g_quick_use_slots[0]));
+	input_packet.r_stringZ(g_quick_use_slots[1], sizeof(g_quick_use_slots[1]));
+	input_packet.r_stringZ(g_quick_use_slots[2], sizeof(g_quick_use_slots[2]));
+	input_packet.r_stringZ(g_quick_use_slots[3], sizeof(g_quick_use_slots[3]));
 }
 
 #ifdef DEBUG

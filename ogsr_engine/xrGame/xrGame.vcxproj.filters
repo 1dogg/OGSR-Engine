@@ -6116,7 +6116,8 @@
     <ClInclude Include="SimpleDetectorSHOC.h">
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
     </ClInclude>
-    <ClInclude Include="Flashligfht.h" />
+    <ClInclude Include="Flashlight.h" />
+    <ClInclude Include="ui\UIDragDropReferenceList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="damage_manager.cpp">
@@ -8929,6 +8930,7 @@
       <Filter>Core\Client\Objects\items &amp; weapons\Devices\Detectors</Filter>
     </ClCompile>
     <ClCompile Include="Flashlight.cpp" />
+    <ClCompile Include="ui\UIDragDropReferenceList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuildStep Include="Explosive.h">

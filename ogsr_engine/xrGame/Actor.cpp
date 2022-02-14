@@ -93,6 +93,7 @@ static Fvector	vFootExt;
 Flags32 psActorFlags = { AF_3D_SCOPES | AF_KEYPRESS_ON_START | AF_CAM_COLLISION };
 
 static bool updated;
+string32 ACTOR_DEFS::g_quick_use_slots[4] = { NULL, NULL, NULL, NULL };
 
 CActor::CActor() : CEntityAlive(),current_ik_cam_shift(0)
 {

@@ -31,6 +31,7 @@ class CUIScrollView;
 class CUIListBox;
 class CUIStatsPlayerList;
 class CUIDragDropListEx;
+class CUIDragDropReferenceList;
 class CUIComboBox;
 class CUITrackBar;
 

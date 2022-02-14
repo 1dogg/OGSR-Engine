@@ -18,7 +18,6 @@
 #define HELMET_SLOT			10
 #define NIGHT_VISION_SLOT	11
 #define BIODETECTOR_SLOT	12
-
 #define SLOTS_TOTAL			13
 
 #define RUCK_HEIGHT			280

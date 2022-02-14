@@ -28,6 +28,7 @@ using namespace InventoryUtilities;
 #include "../game_cl_base.h"
 #include "../ActorCondition.h"
 #include "UIDragDropListEx.h"
+#include "UIDragDropReferenceList.h"
 #include "UIOutfitSlot.h"
 #include "UI3tButton.h"
 
@@ -41,7 +42,8 @@ CUIInventoryWnd*	g_pInvWnd = NULL;
 CUIInventoryWnd::CUIInventoryWnd() : 
 	m_pUIBagList(nullptr), m_pUIBeltList(nullptr), m_pUIPistolList(nullptr), m_pUIAutomaticList(nullptr),
 	m_pUIKnifeList(nullptr), m_pUIHelmetList(nullptr), m_pUIBIODetList(nullptr), m_pUINightVisionList(nullptr),
-	m_pUIDetectorList(nullptr), m_pUITorchList(nullptr), m_pUIBinocularList(nullptr), m_pUIOutfitList(nullptr)
+	m_pUIDetectorList(nullptr), m_pUITorchList(nullptr), m_pUIBinocularList(nullptr), m_pUIOutfitList(nullptr),
+	m_pQuickSlot(nullptr)
 {
 	m_iCurrentActiveSlot				= NO_ACTIVE_SLOT;
 	UIRank								= NULL;
@@ -114,55 +116,62 @@ void CUIInventoryWnd::Init()
 
 	m_pUIBagList						= xr_new<CUIDragDropListEx>(); UIBagWnd.AttachChild(m_pUIBagList); m_pUIBagList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_bag", 0, m_pUIBagList);
-	BindDragDropListEnents				(m_pUIBagList);
+	BindDragDropListEvents				(m_pUIBagList);
 
 	m_pUIBeltList						= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIBeltList); m_pUIBeltList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_belt", 0, m_pUIBeltList);
-	BindDragDropListEnents				(m_pUIBeltList);
+	BindDragDropListEvents				(m_pUIBeltList);
 
 	m_pUIOutfitList						= xr_new<CUIOutfitDragDropList>(); AttachChild(m_pUIOutfitList); m_pUIOutfitList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_outfit", 0, m_pUIOutfitList);
-	BindDragDropListEnents				(m_pUIOutfitList);
+	BindDragDropListEvents				(m_pUIOutfitList);
 
 	if (Core.Features.test(xrCore::Feature::ogse_new_slots)) {
 	m_pUIKnifeList						= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIKnifeList); m_pUIKnifeList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_knife", 0, m_pUIKnifeList);
-	BindDragDropListEnents				(m_pUIKnifeList);
+	BindDragDropListEvents				(m_pUIKnifeList);
 	}
 
 	m_pUIPistolList						= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIPistolList); m_pUIPistolList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_pistol", 0, m_pUIPistolList);
-	BindDragDropListEnents				(m_pUIPistolList);
+	BindDragDropListEvents				(m_pUIPistolList);
 
 	m_pUIAutomaticList					= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIAutomaticList); m_pUIAutomaticList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_automatic", 0, m_pUIAutomaticList);
-	BindDragDropListEnents				(m_pUIAutomaticList);
+	BindDragDropListEvents				(m_pUIAutomaticList);
 
 	if (Core.Features.test(xrCore::Feature::ogse_new_slots)) {
 
 	m_pUIBinocularList					= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIBinocularList); m_pUIBinocularList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_binocular", 0, m_pUIBinocularList);
-	BindDragDropListEnents				(m_pUIBinocularList);
+	BindDragDropListEvents				(m_pUIBinocularList);
 
 	m_pUIHelmetList						= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIHelmetList); m_pUIHelmetList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_helmet", 0, m_pUIHelmetList);
-	BindDragDropListEnents				(m_pUIHelmetList);
+	BindDragDropListEvents				(m_pUIHelmetList);
 
 	m_pUIBIODetList						= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIBIODetList); m_pUIBIODetList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_biodetector", 0, m_pUIBIODetList);
-	BindDragDropListEnents				(m_pUIBIODetList);
+	BindDragDropListEvents				(m_pUIBIODetList);
 
 	m_pUINightVisionList				= xr_new<CUIDragDropListEx>(); AttachChild(m_pUINightVisionList); m_pUINightVisionList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_nv", 0, m_pUINightVisionList);
-	BindDragDropListEnents				(m_pUINightVisionList);
+	BindDragDropListEvents				(m_pUINightVisionList);
 
 	m_pUIDetectorList					= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIDetectorList); m_pUIDetectorList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_detector", 0, m_pUIDetectorList);
-	BindDragDropListEnents				(m_pUIDetectorList);
+	BindDragDropListEvents				(m_pUIDetectorList);
 
 	m_pUITorchList						= xr_new<CUIDragDropListEx>(); AttachChild(m_pUITorchList); m_pUITorchList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_torch", 0, m_pUITorchList);
-	BindDragDropListEnents				(m_pUITorchList);
+	BindDragDropListEvents				(m_pUITorchList);
+
+	m_pQuickSlot = xr_new<CUIDragDropReferenceList>();
+	AttachChild(smart_cast<CUIWindow*>(m_pQuickSlot));
+	m_pQuickSlot->SetAutoDelete(true);
+	xml_init.InitDragDropListEx(uiXml, "dragdrop_quick_slots", 0, m_pQuickSlot);
+	m_pQuickSlot->Initialize();
+	BindDragDropListEvents(m_pQuickSlot);
 
 	}
 
@@ -482,7 +491,7 @@ void	CUIInventoryWnd::SendEvent_Item_Eat			(PIItem	pItem)
 	pItem->object().u_EventSend		(P);
 };
 
-void CUIInventoryWnd::BindDragDropListEnents(CUIDragDropListEx* lst)
+void CUIInventoryWnd::BindDragDropListEvents(CUIDragDropListEx* lst)
 {
 	lst->m_f_item_drop = fastdelegate::MakeDelegate(this, &CUIInventoryWnd::OnItemDrop);
 	lst->m_f_item_start_drag = fastdelegate::MakeDelegate(this, &CUIInventoryWnd::OnItemStartDrag);

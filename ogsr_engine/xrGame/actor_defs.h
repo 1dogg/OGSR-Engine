@@ -48,4 +48,6 @@ enum EMoveCommand
 	mcLookout	= (mcLLookout|mcRLookout),
 };
 
+extern string32 g_quick_use_slots[4];
+
 };

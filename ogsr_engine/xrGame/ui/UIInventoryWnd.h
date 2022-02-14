@@ -17,6 +17,7 @@ class CInventory;
 class CArtefact;
 class CUI3tButton;
 class CUIDragDropListEx;
+class CUIDragDropReferenceList;
 class CUICellItem;
 
 class CUIInventoryWnd: public CUIDialogWnd
@@ -101,12 +102,13 @@ protected:
 	CUIDragDropListEx*			m_pUIDetectorList;
 	CUIDragDropListEx*			m_pUITorchList;
 	CUIDragDropListEx*			m_pUIBinocularList;
+	CUIDragDropReferenceList*	m_pQuickSlot;
 
 	// alpet: для индексированного доступа
 	CUIDragDropListEx*			m_slots_array[ SLOTS_TOTAL ];
 
 	void						ClearAllLists				();
-	void						BindDragDropListEnents		(CUIDragDropListEx* lst);
+	void						BindDragDropListEvents		(CUIDragDropListEx* lst);
 	
 	EListType					GetType						(CUIDragDropListEx* l);
 	CUIDragDropListEx*			GetSlotList					(u8 slot_idx);
@@ -157,6 +159,7 @@ protected:
 	bool						ToSlot						(CUICellItem* itm, bool force_place);
 	bool						ToBag						(CUICellItem* itm, bool b_use_cursor_pos);
 	bool						ToBelt						(CUICellItem* itm, bool b_use_cursor_pos);
+	bool						ToQuickSlot					(CUICellItem* itm);
 
 
 	void						AttachAddon					(PIItem item_to_upgrade);

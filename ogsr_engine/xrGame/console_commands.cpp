@@ -1298,6 +1298,11 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_Integer, "g_cop_death_anim", &g_bCopDeathAnim, 0, 1);
 
+	CMD3(CCC_String, "slot_0", g_quick_use_slots[0], 32);
+	CMD3(CCC_String, "slot_1", g_quick_use_slots[1], 32);
+	CMD3(CCC_String, "slot_2", g_quick_use_slots[2], 32);
+	CMD3(CCC_String, "slot_3", g_quick_use_slots[3], 32);
+
 #ifdef DEBUG
 	CMD3(CCC_Mask,		"dbg_draw_actor_alive",		&dbg_net_Draw_Flags,	(1<<0));
 	CMD3(CCC_Mask,		"dbg_draw_actor_dead",		&dbg_net_Draw_Flags,	(1<<1));

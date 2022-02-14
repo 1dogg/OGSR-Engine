@@ -10,6 +10,7 @@
 #include "UICellItem.h"
 #include "UICellItemFactory.h"
 #include "UIDragDropListEx.h"
+#include "UIDragDropReferenceList.h"
 #include "UI3tButton.h"
 
 #include "../game_object_space.h"
@@ -179,6 +180,8 @@ void CUIInventoryWnd::InitInventory()
 	}
 
 	m_pUIBagList->SetScrollPos(bag_scroll);
+
+	m_pQuickSlot->Show(true);
 
 	UpdateWeight();
 
@@ -373,7 +376,7 @@ bool CUIInventoryWnd::OnItemSelected(CUICellItem* itm)
 {
 	SetCurrentItem(itm);
 
-	itm->ColorizeItems( { m_pUIBagList, m_pUIBeltList, m_pUIPistolList, m_pUIAutomaticList, m_pUIKnifeList, m_pUIHelmetList, m_pUIBIODetList, m_pUINightVisionList, m_pUIDetectorList, m_pUITorchList, m_pUIBinocularList, m_pUIOutfitList } );
+	itm->ColorizeItems( { m_pUIBagList, m_pUIBeltList, m_pUIPistolList, m_pUIAutomaticList, m_pUIKnifeList, m_pUIHelmetList, m_pUIBIODetList, m_pUINightVisionList, m_pUIDetectorList, m_pUITorchList, m_pUIBinocularList, m_pUIOutfitList, m_pQuickSlot } );
 	return false;
 }
 
@@ -515,6 +518,7 @@ void CUIInventoryWnd::ClearAllLists()
 		m_pUIBIODetList->ClearAll(true);
 		m_pUIBinocularList->ClearAll(true);
 	}
+	m_pQuickSlot->ClearAll(true);
 }
 
 
