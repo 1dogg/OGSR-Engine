@@ -317,6 +317,8 @@ bool CUIInventoryWnd::ToBag(CUICellItem* itm, bool b_use_cursor_pos)
 		else
 			new_owner->SetItem				(i);
 
+		m_pQuickSlot->ReloadReferences(smart_cast<CInventoryOwner*>(Level().CurrentViewEntity()));
+
 		SendEvent_Item2Ruck					(iitem);
 		return true;
 	}
@@ -440,6 +442,11 @@ bool CUIInventoryWnd::OnItemDrop(CUICellItem* itm)
 	case iwBelt: {
 		ToBelt(itm, true);
 	}break;
+	case iQuickSlot:
+	{
+		ToQuickSlot(itm);
+	}
+	break;
 	};
 
 	DropItem(CurrentIItem(), new_owner);
@@ -482,7 +489,12 @@ bool CUIInventoryWnd::OnItemDbClick(CUICellItem* itm)
 	case iwBelt: {
 		ToBag(itm, false);
 	}break;
-	};
+	case iQuickSlot:
+	{
+		ToQuickSlot(itm);
+	}
+	break;
+	}; //
 
 	return true;
 }

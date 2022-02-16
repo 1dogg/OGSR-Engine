@@ -189,6 +189,7 @@ void CUIInventoryWnd::Init()
 		m_slots_array[NIGHT_VISION_SLOT] = m_pUINightVisionList;
 		m_slots_array[DETECTOR_SLOT] = m_pUIDetectorList;
 		m_slots_array[TORCH_SLOT] = m_pUITorchList;
+		m_slots_array[QUICK_SLOT] = m_pQuickSlot;
 	}
 
 	//pop-up menu
@@ -228,6 +229,7 @@ EListType CUIInventoryWnd::GetType(CUIDragDropListEx* l)
 {
 	if(l==m_pUIBagList)			return iwBag;
 	if(l==m_pUIBeltList)		return iwBelt;
+	if (l == m_pQuickSlot)		return iQuickSlot;
 
         for ( u8 i = 0; i < SLOTS_TOTAL; i++ )
           if ( m_slots_array[ i ] == l )
@@ -281,7 +283,6 @@ void CUIInventoryWnd::Update()
 	if(m_b_need_reinit)
 		InitInventory					();
 
-
 	CEntityAlive *pEntityAlive			= smart_cast<CEntityAlive*>(Level().CurrentEntity());
 
 	if(pEntityAlive) 
@@ -311,6 +312,8 @@ void CUIInventoryWnd::Update()
 
 			m_b_need_update_stats = false;
 		}
+
+		m_pQuickSlot->ReloadReferences(pOurInvOwner);
 	}
 
 	UIStaticTimeString.SetText(*InventoryUtilities::GetGameTimeAsString(InventoryUtilities::etpTimeToMinutes));
@@ -497,6 +500,7 @@ void CUIInventoryWnd::BindDragDropListEvents(CUIDragDropListEx* lst)
 	lst->m_f_item_start_drag = fastdelegate::MakeDelegate(this, &CUIInventoryWnd::OnItemStartDrag);
 	lst->m_f_item_db_click = fastdelegate::MakeDelegate(this, &CUIInventoryWnd::OnItemDbClick);
 	lst->m_f_item_selected = fastdelegate::MakeDelegate(this, &CUIInventoryWnd::OnItemSelected);
+	lst->m_f_item_rbutton_click = fastdelegate::MakeDelegate(this, &CUIInventoryWnd::OnItemRButtonClick);
 	lst->m_f_item_rbutton_click = fastdelegate::MakeDelegate(this, &CUIInventoryWnd::OnItemRButtonClick);
 }
 
