@@ -90,11 +90,13 @@ void CUIMotionIcon::SetPower(float Pos)
 
 void CUIMotionIcon::SetNoise(float Pos)
 {
+    Pos	= clampr(Pos, 0.0f, 100.0f);
 	m_noise_progress.SetText(std::to_string((int)std::round(Pos)).c_str());
 }
 
 void CUIMotionIcon::SetLuminosity(float Pos)
 {
+	Pos = clampr(Pos, 0.0f, 100.0f);
 	m_luminosity			= Pos;
 }
 
@@ -122,6 +124,7 @@ void CUIMotionIcon::Update()
 			}else{
 				cur_pos				-= _min(len*Device.fTimeDelta, _diff);
 			}
+			clamp(cur_pos, 0.0f, 100.0f);
 			m_luminosity_progress.SetText(std::to_string((int)std::round(cur_pos)).c_str());
 		}
 	}

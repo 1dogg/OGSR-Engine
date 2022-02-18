@@ -139,13 +139,6 @@ void CUIMainIngameWnd::Init()
 
 	Enable(false);
 
-
-	AttachChild					(&UIStaticHealth);
-	xml_init.InitStatic			(uiXml, "static_health", 0, &UIStaticHealth);
-
-	AttachChild					(&UIStaticArmor);
-	xml_init.InitStatic			(uiXml, "static_armor", 0, &UIStaticArmor);
-
 	AttachChild					(&UIWeaponBack);
 	xml_init.InitStatic			(uiXml, "static_weapon", 0, &UIWeaponBack);
 
@@ -160,6 +153,7 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic			(uiXml, "static_wpn_icon", 0, &UIWeaponIcon);
 	UIWeaponIcon.SetShader		(GetEquipmentIconsShader());
 	UIWeaponIcon_rect			= UIWeaponIcon.GetWndRect();
+
 	//---------------------------------------------------------
 	AttachChild					(&UIPickUpItemIcon);
 	xml_init.InitStatic			(uiXml, "pick_up_item", 0, &UIPickUpItemIcon);
@@ -183,15 +177,16 @@ void CUIMainIngameWnd::Init()
 		xml_init.InitStatic					(uiXml, "static_pda_online", 0, &UIPdaOnline);
 		UIZoneMap->Background().AttachChild	(&UIPdaOnline);
 
-
 	//Полоса прогресса здоровья
+		AttachChild(&UIStaticHealth);
+		xml_init.InitStatic(uiXml, "static_health", 0, &UIStaticHealth);
 	UIStaticHealth.AttachChild	(&UIHealthBar);
-//.	xml_init.InitAutoStaticGroup(uiXml,"static_health", &UIStaticHealth);
 	xml_init.InitStatic	(uiXml, "progress_bar_health", 0, &UIHealthBar);
 
 	//Полоса прогресса армора
+	AttachChild(&UIStaticArmor);
+	xml_init.InitStatic(uiXml, "static_armor", 0, &UIStaticArmor);
 	UIStaticArmor.AttachChild	(&UIArmorBar);
-//.	xml_init.InitAutoStaticGroup(uiXml,"static_armor", &UIStaticArmor);
 	xml_init.InitStatic	(uiXml, "progress_bar_armor", 0, &UIArmorBar);
 
 	
@@ -310,7 +305,7 @@ void CUIMainIngameWnd::Draw()
 
 	if(!m_pActor) return;
 
-	UIMotionIcon.SetNoise		(m_pActor->m_snd_noise * 100.0f);
+    UIMotionIcon.SetNoise		((s16)(0xffff&iFloor(m_pActor->m_snd_noise*100.0f)));
 	CUIWindow::Draw				();
 	UIZoneMap->Render			();			
 
@@ -388,22 +383,21 @@ void CUIMainIngameWnd::Update()
 					TurnOffWarningIcon (ewiInvincible);
 		}
 
+		UpdateActiveItemInfo				();
+
 		// Armor indicator stuff
 		PIItem	pItem = m_pActor->inventory().ItemFromSlot(OUTFIT_SLOT);
 		if (pItem)
 		{
-			UIArmorBar.Show					(true);
-			UIStaticArmor.Show				(true);
+			UIArmorBar.Show(true);
+			UIStaticArmor.Show(true);
 			UIArmorBar.SetText((std::to_string((int)std::round(pItem->GetCondition() * 100))).c_str());
 		}
 		else
 		{
-			UIArmorBar.Show					(false);
-			UIStaticArmor.Show				(false);
+			UIArmorBar.Show(false);
+			UIStaticArmor.Show(false);
 		}
-
-		UpdateActiveItemInfo				();
-
 
 		EWarningIcons i = ewiWeaponJammed;
 		while (!external_icon_ctrl && i <= (Core.Features.test(xrCore::Feature::actor_thirst) ? ewiThirst : ewiInvincible))
@@ -857,12 +851,12 @@ void CUIMainIngameWnd::UpdateActiveItemInfo()
 		item->GetBriefInfo			(str_name, icon_sect_name, str_count);
 
 		UIWeaponSignAmmo.Show		(true						);
+        UIWeaponBack.SetText		(str_name.c_str			()	);
 		UIWeaponName.Show			(true						);
 		UIWeaponName.SetText		(item->NameShort		()	);
 		UIWeaponSignAmmo.SetText	(str_count.c_str		()	);
 		SetAmmoIcon					(icon_sect_name.c_str	()	);
 
-		//-------------------
 		m_pWeapon = smart_cast<CWeapon*> (item);		
 	}else
 	{
