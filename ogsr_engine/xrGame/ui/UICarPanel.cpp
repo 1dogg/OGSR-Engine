@@ -19,7 +19,7 @@ void CUICarPanel::Init			(float x, float y, float width, float height)
 
 	UIStaticCarHealth.AttachChild(&UICarHealthBar);
 //.	xml_init.InitAutoStaticGroup(uiXml,"car_health_static", &UIStaticCarHealth);
-	xml_init.InitProgressBar(uiXml, "car_health_progress_bar", 0, &UICarHealthBar);
+	xml_init.InitStatic(uiXml, "car_health_progress_bar", 0, &UICarHealthBar);
 
 /*
 	AttachChild(&UISpeedometer);
@@ -46,7 +46,7 @@ void CUICarPanel::SetCarHealth(float value)
 {
 	float pos = value*100;
 	clamp(pos, 0.0f, 100.0f);
-	UICarHealthBar.SetProgressPos(pos);
+	UICarHealthBar.SetText((std::to_string((int)std::round(pos))).c_str());
 }
 
 //////////////////////////////////////////////////////////////////////////

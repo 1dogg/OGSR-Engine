@@ -57,7 +57,7 @@ void CSnork::Load(LPCSTR section)
 	SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
 	//SVelocityParam &velocity_drag		= move().get_velocity(MonsterMovement::eVelocityParameterDrag);
 
-	bool use_cop_anims = READ_IF_EXISTS( pSettings, r_bool, section, "use_cop_anims", false );
+	bool use_cop_anims = true;
 	if ( use_cop_anims ) {
           anim().AddAnim( eAnimStandIdle,      "stand_idle_",         -1, &velocity_none, PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r" );
           anim().AddAnim( eAnimStandDamaged,   "stand_idle_damaged_", -1, &velocity_none, PS_STAND, "stand_fx_f", "stand_fx_b", "stand_fx_l", "stand_fx_r" );

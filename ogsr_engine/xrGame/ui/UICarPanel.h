@@ -10,7 +10,7 @@ private:
 	typedef CUIWindow inherited;
 
 	CUIStatic			UIStaticCarHealth;
-	CUIProgressBar		UICarHealthBar;
+	CUIStatic			UICarHealthBar;
 //	CUIPointerGage		UISpeedometer;
 //	CUIPointerGage		UITachometer;
 public: 
