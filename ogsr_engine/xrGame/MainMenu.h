@@ -53,6 +53,9 @@ protected:
 		
 	xr_vector<CUIMessageBoxEx*>	m_pMB_ErrDlgs;
 
+private:
+	ref_sound CurrentSound;
+
 public:
 	u32				m_deactivated_frame;
 	virtual void	DestroyInternal					(bool bForce);
@@ -98,6 +101,7 @@ public:
 	void			SetNeedVidRestart				();
 	virtual void	OnDeviceReset					();
 	LPCSTR			GetGSVer						();
+	void			PlaySound						(LPCSTR path);
 };
 
 extern CMainMenu*	MainMenu();

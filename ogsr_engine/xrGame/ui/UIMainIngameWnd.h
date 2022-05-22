@@ -59,6 +59,11 @@ protected:
 	CUIStatic			UIWeaponName;
 	CUIStatic			UIWeaponIcon;
 	Frect				UIWeaponIcon_rect;
+	CUIStatic			UIGrenadeIcon;
+	CUIStatic			UIGrenadeText;
+
+	CUIStatic			UIAmmoGrenadeIcon;
+	CUIStatic			UIAmmoGrenadeText;
 public:
 	CUIStatic*			GetPDAOnline					() { return &UIPdaOnline; };
 	CUIZoneMap*			GetUIZoneMap					() { return UIZoneMap; }
@@ -132,7 +137,7 @@ protected:
 	void				UpdateFlashingIcons				();
 	void				UpdateActiveItemInfo			();
 
-	void				SetAmmoIcon						(const shared_str& seсt_name);
+	void				SetAmmoIcon						(const shared_str& seсt_name, bool withoutDescription);
 
 	// first - иконка, second - анимация
 	DEF_MAP				(FlashingIcons, EFlashingIcons, CUIStatic*);

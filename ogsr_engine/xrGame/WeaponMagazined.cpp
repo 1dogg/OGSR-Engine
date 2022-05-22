@@ -1404,20 +1404,23 @@ void CWeaponMagazined::net_Export( CSE_Abstract* E ) {
   wpn->m_u8CurFireMode = u8( m_iCurFireMode&0x00ff );
 }
 
-void CWeaponMagazined::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count)
+void CWeaponMagazined::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count, xr_string& str_ammo_name)
 {
 	const int AE = GetAmmoElapsed(), AC = GetAmmoCurrent();
 	
+	icon_sect_name = *cNameSect();
+
 	if (AE == 0 || m_magazine.empty())
-		icon_sect_name = m_ammoTypes[m_ammoType].c_str();
+		str_ammo_name = m_ammoTypes[m_ammoType].c_str();
 	else
-		icon_sect_name = m_ammoTypes[m_magazine.back().m_LocalAmmoType].c_str();
+		str_ammo_name = m_ammoTypes[m_magazine.back().m_LocalAmmoType].c_str();
+
+	string256 sAmmoName;
+	strcpy_s(sAmmoName, CStringTable().translate(pSettings->r_string(str_ammo_name.c_str(), "inv_name_short")).c_str());
+	str_ammo_name = sAmmoName;
 
 	string256 sItemName;
 	strcpy_s(sItemName, CStringTable().translate(pSettings->r_string(icon_sect_name.c_str(), "inv_name_short")).c_str());
-
-	if ( HasFireModes() )
-		strcat_s(sItemName, GetCurrentFireModeStr());
 
 	str_name = sItemName;
 
@@ -1425,6 +1428,9 @@ void CWeaponMagazined::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_na
 	str_count = m_str_count_tmpl;
 	str_count = std::regex_replace(str_count, ae_re, std::to_string(AE));
 	str_count = std::regex_replace(str_count, ac_re, unlimited_ammo() ? "--" : std::to_string(AC - AE));
+
+	if (HasFireModes())
+		str_count = str_count + GetCurrentFireModeStr();
 }
 
 void CWeaponMagazined::OnDrawUI()

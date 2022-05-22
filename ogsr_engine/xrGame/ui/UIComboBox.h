@@ -42,8 +42,8 @@ public:
 			void		SetListLength			(int length);
 			void		SetVertScroll			(bool bVScroll = true){m_list.SetFixedScrollBar(bVScroll);};
 //.	virtual void		AddItem					(LPCSTR str, bool bSelected);
-	CUIListBoxItem*		AddItem_				(LPCSTR str, int _data);
-	CUIListBoxItem*		AddItem_				(LPCSTR str);
+			void		AddItem_				(LPCSTR str, int _data);
+			void		AddItem_				(LPCSTR str);
 	virtual void		Init					(float x, float y, float width);
 			void		SetItem					(int i);
 
@@ -53,6 +53,7 @@ public:
 	virtual void		OnFocusReceive			();
 	
 			int			CurrentID				()	{return m_itoken_id;}
+			bool				m_custom;
 protected:
 	virtual void		SetState				(UIState state);
 	virtual bool		OnKeyboard			(int dik, EUIMessages keyboard_action);

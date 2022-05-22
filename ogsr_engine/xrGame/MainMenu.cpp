@@ -463,3 +463,15 @@ LPCSTR CMainMenu::GetGSVer()
 {
 	return Core.GetEngineVersion();
 }
+
+void CMainMenu::PlaySound(LPCSTR path)
+{
+	if (!path)
+		return;
+
+	if (CurrentSound._feedback())
+		CurrentSound.stop();
+
+	CurrentSound.create(path, st_Effect, sg_SourceType);
+	CurrentSound.play(nullptr, sm_2D);
+}

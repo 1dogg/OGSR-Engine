@@ -84,18 +84,16 @@ void CUIComboBox::Init(float x, float y, float width, float height)
 }
 
 #include "uilistboxitem.h"
-CUIListBoxItem* CUIComboBox::AddItem_(LPCSTR str, int _data)
+void CUIComboBox::AddItem_(LPCSTR str, int _data)
 {
     R_ASSERT2			(m_bInited, "Can't add item to ComboBox before Initialization");
 	CUIListBoxItem* itm = m_list.AddItem(str);
 	itm->SetData		((void*)(__int64)_data);
-	return				itm;
 }
-CUIListBoxItem* CUIComboBox::AddItem_(LPCSTR str)
+void CUIComboBox::AddItem_(LPCSTR str)
 {
 	R_ASSERT2(m_bInited, "Can't add item to ComboBox before Initialization");
-	CUIListBoxItem* itm = m_list.AddItem(str);
-	return				itm;
+	m_list.AddItem(str);
 }
 
 void CUIComboBox::OnListItemSelect()
@@ -142,6 +140,9 @@ void CUIComboBox::SaveValue()
 {
 	CUIOptionsItem::SaveValue	();
 	const xr_token* tok				= GetOptToken();
+	if (tok == NULL) {
+		return;
+	}
 	const char*	cur_val			= tok[m_itoken_id].name;
 	SaveOptTokenValue			(cur_val);
 }

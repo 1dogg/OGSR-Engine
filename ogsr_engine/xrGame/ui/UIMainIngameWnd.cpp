@@ -154,6 +154,18 @@ void CUIMainIngameWnd::Init()
 	UIWeaponIcon.SetShader		(GetEquipmentIconsShader());
 	UIWeaponIcon_rect			= UIWeaponIcon.GetWndRect();
 
+	AttachChild(&UIGrenadeIcon);
+	xml_init.InitStatic(uiXml, "static_grenade_icon", 0, &UIGrenadeIcon);
+
+	AttachChild(&UIGrenadeText);
+	xml_init.InitStatic(uiXml, "static_grenade_text", 0, &UIGrenadeText);
+
+	AttachChild(&UIAmmoGrenadeIcon);
+	xml_init.InitStatic(uiXml, "static_ammo_grenade_icon", 0, &UIAmmoGrenadeIcon);
+
+	AttachChild(&UIAmmoGrenadeText);
+	xml_init.InitStatic(uiXml, "static_ammo_grenade_text", 0, &UIAmmoGrenadeText);
+
 	//---------------------------------------------------------
 	AttachChild					(&UIPickUpItemIcon);
 	xml_init.InitStatic			(uiXml, "pick_up_item", 0, &UIPickUpItemIcon);
@@ -312,7 +324,7 @@ void CUIMainIngameWnd::Draw()
 	RenderQuickInfos			();		
 }
 
-void CUIMainIngameWnd::SetAmmoIcon (const shared_str& sect_name)
+void CUIMainIngameWnd::SetAmmoIcon(const shared_str& sect_name, bool withoutDescription)
 {
 	if ( !sect_name.size() )
 	{
@@ -332,7 +344,7 @@ void CUIMainIngameWnd::SetAmmoIcon (const shared_str& sect_name)
 	float h = INV_GRID_HEIGHT * 0.8;
 	w *= UI()->get_current_kx();
 
-	float x = UIWeaponIcon_rect.x1;
+	float x = UIWeaponIcon_rect.x1 + (withoutDescription ? 44 : 0);
 	if (iGridWidth < 2.f)
 		x += w / 2.0f;
 
@@ -384,6 +396,11 @@ void CUIMainIngameWnd::Update()
 		}
 
 		UpdateActiveItemInfo				();
+		auto grenades = m_pActor->inventory().dwfGetGrenadeCount(true);
+		UIGrenadeText.SetText(("x" + std::to_string(grenades)).c_str());
+
+		auto ammo_grenades = m_pActor->inventory().dwfGetAmmoGrenadeCount(true);
+		UIAmmoGrenadeText.SetText(("x" + std::to_string(ammo_grenades)).c_str());
 
 		// Armor indicator stuff
 		PIItem	pItem = m_pActor->inventory().ItemFromSlot(OUTFIT_SLOT);
@@ -848,14 +865,20 @@ void CUIMainIngameWnd::UpdateActiveItemInfo()
 		xr_string					str_name;
 		xr_string					icon_sect_name;
 		xr_string					str_count;
-		item->GetBriefInfo			(str_name, icon_sect_name, str_count);
+		xr_string					str_ammo_name;
+
+		auto magazined = smart_cast<CWeaponMagazined*>(item);
+		if (magazined != nullptr)
+			magazined->GetBriefInfo(str_name, icon_sect_name, str_count, str_ammo_name);
+		else
+			item->GetBriefInfo(str_name, icon_sect_name, str_count);
 
 		UIWeaponSignAmmo.Show		(true						);
-        UIWeaponBack.SetText		(str_name.c_str			()	);
+        UIWeaponBack.SetText		(magazined == nullptr ? "" : str_ammo_name.c_str());
 		UIWeaponName.Show			(true						);
-		UIWeaponName.SetText		(item->NameShort		()	);
+		UIWeaponName.SetText		(str_name.c_str			()	);
 		UIWeaponSignAmmo.SetText	(str_count.c_str		()	);
-		SetAmmoIcon					(icon_sect_name.c_str	()	);
+		SetAmmoIcon					(icon_sect_name.c_str	(), magazined == nullptr);
 
 		m_pWeapon = smart_cast<CWeapon*> (item);		
 	}else

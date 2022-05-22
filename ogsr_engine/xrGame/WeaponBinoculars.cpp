@@ -102,8 +102,9 @@ void CWeaponBinoculars::load(IReader &input_packet)
 
 void CWeaponBinoculars::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count)
 {
+	xr_string					str_ammo_name;
 	if (Core.Features.test(xrCore::Feature::binoc_firing)) {
-		inherited::GetBriefInfo(str_name, icon_sect_name, str_count);
+		inherited::GetBriefInfo(str_name, icon_sect_name, str_count, str_ammo_name);
 	}
 	else {
 		str_name = NameShort();

@@ -45,7 +45,6 @@ CUIListBoxItem* CUIListBox::AddItem(LPCSTR text)
 {
 	if (!text)			
 		return					NULL;
-
 	CUIListBoxItem* pItem		= xr_new<CUIListBoxItem>();
 	pItem->Init					(0,0,this->GetDesiredChildWidth() - 5, m_def_item_height);
 	if (!m_selection_texture)

@@ -26,8 +26,7 @@ void CUIComboBox::script_register(lua_State *L)
 		.def("CurrentID",			&CUIComboBox::CurrentID)
 		.def("SetCurrentID",		&CUIComboBox::SetItem)
 		
-//		.def("AddItem",				(void (CUIComboBox::*)(LPCSTR, bool)) CUIComboBox::AddItem)
-		.def("AddItem",				(CUIListBoxItem* (CUIComboBox::*)(LPCSTR)) &CUIComboBox::AddItem_)
+		.def("AddItem",				(void (CUIComboBox::*)(LPCSTR, int)) &CUIComboBox::AddItem_)
 		.def("GetText",				&CUIComboBox::GetText)
 	];
 }
