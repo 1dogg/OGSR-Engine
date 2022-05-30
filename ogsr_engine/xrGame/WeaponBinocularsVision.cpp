@@ -63,10 +63,9 @@ void SBinocVisibleObj::Draw()
 	m_rb.Draw			();
 
 	auto dist = Device.vCameraPosition.distance_to(m_object->Position());
-	std::string s(16, '\0');
-	auto written = std::snprintf(&s[0], s.size(), "%4.1f", dist);
-	s.resize(written);
-	m_distance.SetText(s.c_str());
+	string16 s;
+	sprintf_s(s, "%4.1f", dist);
+	m_distance.SetText(s);
 	m_distance.DrawText();
 }
 
