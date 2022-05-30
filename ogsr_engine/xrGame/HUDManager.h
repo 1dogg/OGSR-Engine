@@ -16,6 +16,7 @@ struct CFontManager :public pureDeviceReset			{
 	void					Render					();
 
 	// hud font
+	CGameFont*				pFontSmall;
 	CGameFont*				pFontMedium;
 	CGameFont*				pFontDI;
 

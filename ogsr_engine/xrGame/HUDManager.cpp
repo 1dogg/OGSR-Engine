@@ -13,6 +13,7 @@ CFontManager::CFontManager()
 {
   Device.seqDeviceReset.Add(this, REG_PRIORITY_HIGH);
 
+  m_all_fonts.push_back(&pFontSmall);// used cpp
   m_all_fonts.push_back(&pFontMedium);// used cpp
   m_all_fonts.push_back(&pFontDI);// used cpp
     
@@ -40,7 +41,7 @@ CFontManager::CFontManager()
 
 void CFontManager::InitializeFonts()
 {
-
+  InitializeFont(pFontSmall, "hud_font_small");
   InitializeFont(pFontMedium, "hud_font_medium");
   InitializeFont(pFontDI, "hud_font_di", CGameFont::fsGradient | CGameFont::fsDeviceIndependent);
 

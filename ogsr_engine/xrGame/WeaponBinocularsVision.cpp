@@ -15,6 +15,7 @@
 #include "AI/Monsters/BaseMonster/base_monster.h"
 #include "..\xr_3da\IGame_Persistent.h"
 #include "HUDTarget.h"
+#include "HudManager.h"
 
 #define RECT_SIZE	16
 
@@ -32,18 +33,20 @@ void SBinocVisibleObj::create_default(u32 color)
 	m_lb.Init			("ui\\ui_enemy_frame",0,0,RECT_SIZE,RECT_SIZE);
 	m_rt.Init			("ui\\ui_enemy_frame",0,0,RECT_SIZE,RECT_SIZE);
 	m_rb.Init			("ui\\ui_enemy_frame",0,0,RECT_SIZE,RECT_SIZE);
+	m_distance.Init		(0, 0, RECT_SIZE, RECT_SIZE);
 
 	m_lt.SetOriginalRect(0,			0,			RECT_SIZE,	RECT_SIZE);
 	m_lb.SetOriginalRect(0,			RECT_SIZE,	RECT_SIZE,	RECT_SIZE);
 	m_rt.SetOriginalRect(RECT_SIZE,	0,			RECT_SIZE,	RECT_SIZE);
 	m_rb.SetOriginalRect(RECT_SIZE,	RECT_SIZE,	RECT_SIZE,	RECT_SIZE);
-
+	m_distance.SetFont(HUD().Font().pFontSmall);
 
 	u32 clr			= subst_alpha(color,128);
 	m_lt.SetColor	(clr);
 	m_lb.SetColor	(clr);
 	m_rt.SetColor	(clr);
 	m_rb.SetColor	(clr);
+	m_distance.SetTextColor		(color_rgba_f(255, 125, 0, 255));
 
 	cur_rect.set	(0,0, UI_BASE_WIDTH,UI_BASE_HEIGHT);
 
@@ -58,6 +61,13 @@ void SBinocVisibleObj::Draw()
 	m_lb.Draw			();
 	m_rt.Draw			();
 	m_rb.Draw			();
+
+	auto dist = Device.vCameraPosition.distance_to(m_object->Position());
+	std::string s(16, '\0');
+	auto written = std::snprintf(&s[0], s.size(), "%4.1f", dist);
+	s.resize(written);
+	m_distance.SetText(s.c_str());
+	m_distance.DrawText();
 }
 
 void SBinocVisibleObj::Update()
@@ -134,6 +144,7 @@ void SBinocVisibleObj::Update()
 		}
 	}
 
+	m_distance.SetWndPos((cur_rect.lt.x) + 2, (cur_rect.lt.y) + 2 - RECT_SIZE);
 	m_lt.SetWndPos		( (cur_rect.lt.x)+2,	(cur_rect.lt.y)+2 );
 	m_lb.SetWndPos		( (cur_rect.lt.x)+2,	(cur_rect.rb.y)-14 );
 	m_rt.SetWndPos		( (cur_rect.rb.x)-14,	(cur_rect.lt.y)+2 );

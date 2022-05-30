@@ -15,6 +15,7 @@ struct SBinocVisibleObj{
 	CUIStatic				m_lb;
 	CUIStatic				m_rt;
 	CUIStatic				m_rb;
+	CUIStatic				m_distance;
 	Frect					cur_rect;
 
 	u32					m_visible_time;
